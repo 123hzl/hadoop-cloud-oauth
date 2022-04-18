@@ -32,10 +32,6 @@ public class OauthApplication {
 		SpringApplication.run(OauthApplication.class, args);
 	}
 
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
 }
 
 
