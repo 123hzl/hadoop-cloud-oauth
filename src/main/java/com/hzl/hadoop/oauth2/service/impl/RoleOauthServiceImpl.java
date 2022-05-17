@@ -15,7 +15,7 @@ import java.util.Set;
 
 /**
  * description
- *
+ * 用户接口权限
  * @author hzl 2021/09/10 11:53 AM
  */
 @Slf4j
@@ -34,7 +34,7 @@ public class RoleOauthServiceImpl implements RoleOauthService {
 		if (principal instanceof UserDetails) { //首先判断先当前用户是否是我们UserDetails对象。
 			String userName = ((UserDetails) principal).getUsername();
 			log.info("用户名{}",userName);
-			// 数据库读取 //读取用户所拥有权限的所有URL
+			// 数据库读取 //读取用户所拥有权限的所有URL，目前还没有角色和接口的关系表，后面直接通过用户获取所有角色，
 			Set<String> urls = interfaceManageService.selectUrls(null);
 
 			// 注意这里不能用equal来判断，因为有些URL是有参数的，所以要用AntPathMatcher来比较

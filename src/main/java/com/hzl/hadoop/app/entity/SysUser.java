@@ -7,7 +7,7 @@ import lombok.*;
 
 /**
  * description
- *
+ * 不用oauth2的SysUser，便于扩展，减少相互直接的影响
  * @author hzl 2021/09/09 5:11 PM
  */
 @Setter
@@ -16,7 +16,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@TableName("xlweb_images")
+@TableName("sys_user")
 public class SysUser extends BaseEntity {
 
 	@TableId

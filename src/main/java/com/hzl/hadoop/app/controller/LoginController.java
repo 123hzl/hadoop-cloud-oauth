@@ -2,11 +2,10 @@ package com.hzl.hadoop.app.controller;
 
 
 import com.hzl.hadoop.app.service.MyUserDetailsService;
+import com.hzl.hadoop.app.vo.RecoveredPasswordVO;
 import com.hzl.hadoop.app.vo.SysUserVO;
-import com.hzl.hadoop.oauth2.security.WebSecurityConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import javax.validation.Valid;
 
 /**
  * description
@@ -53,6 +54,20 @@ public class LoginController {
 	public ResponseEntity<Boolean> register(@RequestBody SysUserVO sysUserVO) {
 
 		return new ResponseEntity(myUserDetailsService.register(sysUserVO), HttpStatus.OK);
+	}
+
+
+	/**
+	 * <p>
+	 * 忘记密码，发送短信或者邮件验证码，用户输入新密码和确认码进行修改密码。。验证码存入缓存并设置失效时间。
+	 * </p>
+	 *
+	 * @author hzl 2020/01/08 12:41 PM
+	 */
+	@PostMapping(value = "/recovered/password")
+	public ResponseEntity<Boolean> recoveredPassword(@Valid @RequestBody RecoveredPasswordVO recoveredPasswordVO) {
+
+		return new ResponseEntity(myUserDetailsService.recoveredPassword(recoveredPasswordVO), HttpStatus.OK);
 	}
 
 	/**

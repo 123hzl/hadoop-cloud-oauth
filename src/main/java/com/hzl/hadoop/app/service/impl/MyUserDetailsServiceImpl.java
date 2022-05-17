@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.hzl.hadoop.app.entity.SysUser;
 import com.hzl.hadoop.app.mapper.SysUserMapper;
 import com.hzl.hadoop.app.service.MyUserDetailsService;
+import com.hzl.hadoop.app.vo.RecoveredPasswordVO;
 import com.hzl.hadoop.app.vo.SysUserVO;
 import com.hzl.hadoop.config.exception.CommonException;
 import com.hzl.hadoop.config.utils.JsonUtils;
@@ -51,12 +52,18 @@ public class MyUserDetailsServiceImpl implements MyUserDetailsService {
 		validateUser(sysUserVO);
 		String password = sysUserVO.getPassword();
 		sysUserVO.setPassword(passwordEncoder.encode(password));
-		int i = sysUserMapper.insert((SysUser) JsonUtils.cloneObject(sysUserVO, SysUser.class));
+		int i = sysUserMapper.insert(JsonUtils.cloneObject(sysUserVO, SysUser.class));
 		if (i > 0) {
 			return true;
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	public Boolean recoveredPassword(RecoveredPasswordVO recoveredPasswordVO) {
+
+		return null;
 	}
 
 
