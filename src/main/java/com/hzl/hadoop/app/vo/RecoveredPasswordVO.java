@@ -30,7 +30,7 @@ public class RecoveredPasswordVO {
 	private String phone;
 
 	/**
-	 * 新的用户密码
+	 * 新的用户密码,非加密的密码，，后期可以让前端用js进行加密，然后传到后端，后端解密后，在进行加密
 	 */
 	@NotNull(message = "密码不为空")
 	private String password;

@@ -57,6 +57,22 @@ public class LoginController {
 	}
 
 
+
+
+	/**
+	 * <p>
+	 * 点击忘记密码后，输入手机号码，密码，确认密码后，点击获取验证码，然后输入验证码确认
+	 * </p>
+	 *
+	 * @author hzl 2020/01/08 12:41 PM
+	 */
+	@GetMapping(value = "/password/authCode")
+	public ResponseEntity<Boolean> authCodePassword(String phone) {
+
+		return new ResponseEntity(myUserDetailsService.authCodePassword(phone), HttpStatus.OK);
+	}
+
+
 	/**
 	 * <p>
 	 * 忘记密码，发送短信或者邮件验证码，用户输入新密码和确认码进行修改密码。。验证码存入缓存并设置失效时间。

@@ -18,4 +18,6 @@ public interface MyUserDetailsService {
 	Boolean register(SysUserVO sysUserVO);
 
 	Boolean recoveredPassword(RecoveredPasswordVO recoveredPasswordVO);
+
+	Boolean authCodePassword(String phone);
 }

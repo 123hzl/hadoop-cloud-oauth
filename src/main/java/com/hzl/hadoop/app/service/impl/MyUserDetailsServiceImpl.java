@@ -3,13 +3,16 @@ package com.hzl.hadoop.app.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.hzl.hadoop.app.entity.SysUser;
 import com.hzl.hadoop.app.mapper.SysUserMapper;
 import com.hzl.hadoop.app.service.MyUserDetailsService;
 import com.hzl.hadoop.app.vo.RecoveredPasswordVO;
 import com.hzl.hadoop.app.vo.SysUserVO;
 import com.hzl.hadoop.config.exception.CommonException;
+import com.hzl.hadoop.config.utils.GenerateCodeUtils;
 import com.hzl.hadoop.config.utils.JsonUtils;
+import com.hzl.hadoop.config.utils.RedisUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -63,7 +66,50 @@ public class MyUserDetailsServiceImpl implements MyUserDetailsService {
 	@Override
 	public Boolean recoveredPassword(RecoveredPasswordVO recoveredPasswordVO) {
 
-		return null;
+		//校验验证码是否正确
+		String code= (String) RedisUtils.get(recoveredPasswordVO.getPhone());
+
+		if(StringUtils.isNotBlank(code)&&code.equals(recoveredPasswordVO.getIndentifyCode())){
+			//验证码没有失效，且校验通过，更新用户密码
+
+			//查询用户信息
+			SysUser sysUser = new SysUser();
+			sysUser.setPhone(recoveredPasswordVO.getPhone());
+			Wrapper<SysUser> queryWrapper = new QueryWrapper<>(sysUser);
+			sysUser=sysUserMapper.selectOne(queryWrapper);
+
+			//判断用户信息是否存在
+			if(sysUser!=null){
+
+				UpdateWrapper<SysUser> updateWrapper = new UpdateWrapper<>();
+				updateWrapper.eq("id",sysUser.getId());
+
+				SysUser sysUserUpdate = new SysUser();
+				sysUserUpdate.setPassword(passwordEncoder.encode(recoveredPasswordVO.getPassword()));
+
+				sysUserMapper.update(sysUserUpdate,updateWrapper);
+
+			}else{
+				throw new CommonException("用户信息不存在!");
+			}
+
+		}else{
+			throw new CommonException("验证码失效");
+		}
+
+		return true;
+	}
+
+	@Override
+	public Boolean authCodePassword(String phone) {
+		//生成验证码
+		String code= GenerateCodeUtils.generateNumCode(4);
+		RedisUtils redisUtils=new RedisUtils();
+		//存入redis 默认五分钟失效
+		RedisUtils.set(phone,code,300);
+		//发送邮件,或者短信 todo
+
+		return true;
 	}
 
 
