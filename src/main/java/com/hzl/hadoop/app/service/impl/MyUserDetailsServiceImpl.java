@@ -102,11 +102,25 @@ public class MyUserDetailsServiceImpl implements MyUserDetailsService {
 
 	@Override
 	public Boolean authCodePassword(String phone) {
-		//生成验证码
-		String code= GenerateCodeUtils.generateNumCode(4);
-		RedisUtils redisUtils=new RedisUtils();
-		//存入redis 默认五分钟失效
-		RedisUtils.set(phone,code,300);
+
+		//查询用户信息
+		SysUser sysUser = new SysUser();
+		sysUser.setPhone(phone);
+		Wrapper<SysUser> queryWrapper = new QueryWrapper<>(sysUser);
+		sysUser=sysUserMapper.selectOne(queryWrapper);
+
+		if(sysUser==null){
+			throw new CommonException("用户信息不存在!");
+		}
+
+		//验证码存在直接返回
+		//生成验证码,并发情况下最多出现验证码被覆盖的情况
+		String code= (String) RedisUtils.get(phone);
+		if(StringUtils.isBlank(code)){
+			code=GenerateCodeUtils.generateNumCode(4);
+			//存入redis 默认五分钟失效
+			RedisUtils.set(phone,code,300);
+		}
 		//发送邮件,或者短信 todo
 
 		return true;

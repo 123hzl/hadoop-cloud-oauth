@@ -108,7 +108,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 				.authorizeRequests() // 授权配置
 				//无需权限访问
-				.antMatchers("/css/**", "/error404", "/register", "/druid/**").permitAll()
+				.antMatchers("/css/**", "/error404", "/register", "/druid/**","/password/authCode","/recovered/password").permitAll()
 				.antMatchers("/oauth/**").authenticated()
 				//必须经过认证以后才能访问
 				.anyRequest().access("@roleOauthService.hasPermission(request,authentication)");

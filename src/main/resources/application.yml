@@ -4,7 +4,7 @@ spring:
   cache:
     type: none #设置cache的类型可以是redis,none是禁用cache缓存
   redis:
-    host: tt
+    host: 124.70.150.23
     port: 6379
     # redis默认情况下有16个分片，这里配置具体使用的分片，默认为0
     database: 0
@@ -19,7 +19,7 @@ spring:
         max-idle: 8
         #连接池中最新空闲连接
         min-idle: 0
-    password:
+    password: hzl
     timeout: 10000ms
 
   freemarker:

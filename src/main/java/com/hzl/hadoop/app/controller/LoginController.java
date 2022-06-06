@@ -100,7 +100,7 @@ public class LoginController {
 
 	/**
 	 * <p>
-	 * 获取当前登陆人信息 todo
+	 * 获取当前登陆人信息 必须传token
 	 * </p>
 	 *
 	 * @author hzl 2020/01/08 12:41 PM
