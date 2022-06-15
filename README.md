@@ -14,7 +14,7 @@ http://localhost:8080/workflow/requestlogs/1463775644510908418
 授权码模式：
 
 1：获取授权码：http://localhost:8888/oauth/authorize?response_type=code&client_id=hadoop 会跳转到登陆界面，登陆后授权返回授权码
-2：根据授权码获取token: curl -i -X POST -d "username=hzl&password=123&grant_type=authorization_code&client_id=hadoop&client_secret=123&code=fJsIhM" http://localhost:8888/oauth/token
+2：根据授权码获取token: curl -i -X POST -d "username=hzl&password=123&grant_type=authorization_code&client_id=hadoop&client_secret=123&code=EEzo3S" http://localhost:8888/oauth/token
 3：携带token访问：http://localhost:8080/workflow/requestlogs/1463775644510908418?access_token=c574806a-7d94-4fd8-b9d0-3ae25526f465
 
 

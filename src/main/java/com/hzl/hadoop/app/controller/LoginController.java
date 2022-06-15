@@ -4,6 +4,8 @@ package com.hzl.hadoop.app.controller;
 import com.hzl.hadoop.app.service.MyUserDetailsService;
 import com.hzl.hadoop.app.vo.RecoveredPasswordVO;
 import com.hzl.hadoop.app.vo.SysUserVO;
+import com.hzl.hadoop.app.vo.UserInfoVO;
+import com.hzl.hadoop.config.mvc.BaseResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +33,7 @@ public class LoginController {
 
 	/**
 	 * <p>
-	 * 登陆页面
+	 * 登陆页面,可以不用
 	 * </p>
 	 *
 	 * @author hzl 2020/01/08 12:41 PM
@@ -55,8 +57,6 @@ public class LoginController {
 
 		return new ResponseEntity(myUserDetailsService.register(sysUserVO), HttpStatus.OK);
 	}
-
-
 
 
 	/**
@@ -88,7 +88,7 @@ public class LoginController {
 
 	/**
 	 * <p>
-	 * 退出界面
+	 * 退出界面，可以不用直接调用WebSecurityConfig配置logoutUrl
 	 * </p>
 	 *
 	 * @author hzl 2020/01/08 12:41 PM
@@ -105,10 +105,13 @@ public class LoginController {
 	 *
 	 * @author hzl 2020/01/08 12:41 PM
 	 */
-	@PostMapping(value = "/userinfo")
-	public ResponseEntity<Boolean> getCurrentUserInfo(@RequestBody SysUserVO sysUserVO) {
+	@GetMapping(value = "/currentUser1")
+	public ResponseEntity<BaseResponse> getCurrentUserInfo() {
 
-		return new ResponseEntity(myUserDetailsService.register(sysUserVO), HttpStatus.OK);
+		UserInfoVO userInfoVO=myUserDetailsService.getCurrentUserInfo();
+		BaseResponse baseResponse=new BaseResponse(userInfoVO);
+
+		return new ResponseEntity(baseResponse,HttpStatus.OK);
 	}
 
 
@@ -121,6 +124,7 @@ public class LoginController {
 	 */
 	@PostMapping(value = "/token")
 	public ResponseEntity<Boolean> getToken(@RequestBody SysUserVO sysUserVO) {
+
 
 		return new ResponseEntity(myUserDetailsService.register(sysUserVO), HttpStatus.OK);
 	}

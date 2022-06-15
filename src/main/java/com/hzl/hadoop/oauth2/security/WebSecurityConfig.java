@@ -42,6 +42,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Qualifier("myAuthenticationFailureHandler")
 	private AuthenticationFailureHandler myAuthenticationFailHander;
 
+	@Autowired
+	private CustomLogoutHandler customLogoutHandler;
+
 
 	/**
 	 * 指定token的持久化策略
@@ -93,7 +96,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 				//登录处理
 				.formLogin() //表单方式，或httpBasic
-				.loginProcessingUrl("/login")
+				//.loginPage("/login")
+				.loginProcessingUrl("/api/login/account1")
 				.successHandler(myAuthenticationSuccessHandler)
 				.failureHandler(myAuthenticationFailHander)
 				.permitAll()
@@ -103,12 +107,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.logoutUrl("/logout")
 				//退出成功后跳转的页面
 				.logoutSuccessUrl("/index")
+				.addLogoutHandler(customLogoutHandler)
+				.logoutSuccessHandler(new CustomLogoutSuccessHandler())
 				//退出时要删除的Cookies的名字
 				.deleteCookies("JSESSIONID");
 		http
 				.authorizeRequests() // 授权配置
 				//无需权限访问
-				.antMatchers("/css/**", "/error404", "/register", "/druid/**","/password/authCode","/recovered/password").permitAll()
+				.antMatchers("/js/**", "/error404", "/register", "/druid/**","/password/authCode","/recovered/password").permitAll()
 				.antMatchers("/oauth/**").authenticated()
 				//必须经过认证以后才能访问
 				.anyRequest().access("@roleOauthService.hasPermission(request,authentication)");

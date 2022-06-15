@@ -9,11 +9,15 @@ import com.hzl.hadoop.app.mapper.SysUserMapper;
 import com.hzl.hadoop.app.service.MyUserDetailsService;
 import com.hzl.hadoop.app.vo.RecoveredPasswordVO;
 import com.hzl.hadoop.app.vo.SysUserVO;
+import com.hzl.hadoop.app.vo.UserInfoVO;
 import com.hzl.hadoop.config.exception.CommonException;
 import com.hzl.hadoop.config.utils.GenerateCodeUtils;
 import com.hzl.hadoop.config.utils.JsonUtils;
 import com.hzl.hadoop.config.utils.RedisUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +26,7 @@ import org.springframework.stereotype.Service;
  *
  * @author hzl 2021/09/09 5:10 PM
  */
+@Slf4j
 @Service
 public class MyUserDetailsServiceImpl implements MyUserDetailsService {
 
@@ -124,6 +129,21 @@ public class MyUserDetailsServiceImpl implements MyUserDetailsService {
 		//发送邮件,或者短信 todo
 
 		return true;
+	}
+
+	@Override
+	public UserInfoVO getCurrentUserInfo() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+		String userName=authentication.getName();
+
+		SysUser sysUser=selectUserByUserName(userName);
+
+
+		UserInfoVO userInfoVO=JsonUtils.cloneObject(sysUser,UserInfoVO.class);
+		userInfoVO.setUserid(String.valueOf(sysUser.getId()));
+
+		return userInfoVO;
 	}
 
 

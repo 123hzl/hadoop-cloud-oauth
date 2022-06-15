@@ -19,7 +19,7 @@ import java.util.Arrays;
  * @date 2021-11-19 16:18:12
  */
 @RestController
-@RequestMapping("workflow/tenantmanage")
+@RequestMapping("/tenantmanage")
 public class TenantManageController {
 	@Autowired
 	private TenantManageService tenantManageService;

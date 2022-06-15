@@ -28,4 +28,10 @@ public class SysUser extends BaseEntity {
 
 	private String phone;
 
+
+	/**
+	 * 头像
+	 */
+	private String avatar;
+
 }

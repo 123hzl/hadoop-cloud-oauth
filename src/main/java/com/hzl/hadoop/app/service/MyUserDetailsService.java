@@ -3,6 +3,7 @@ package com.hzl.hadoop.app.service;
 import com.hzl.hadoop.app.entity.SysUser;
 import com.hzl.hadoop.app.vo.RecoveredPasswordVO;
 import com.hzl.hadoop.app.vo.SysUserVO;
+import com.hzl.hadoop.app.vo.UserInfoVO;
 
 /**
  * description
@@ -20,4 +21,6 @@ public interface MyUserDetailsService {
 	Boolean recoveredPassword(RecoveredPasswordVO recoveredPasswordVO);
 
 	Boolean authCodePassword(String phone);
+
+	UserInfoVO getCurrentUserInfo();
 }
