@@ -1,5 +1,7 @@
 package com.hzl.hadoop.oauth2.security;
 
+import com.hzl.hadoop.app.vo.LoginSuccessVO;
+import com.hzl.hadoop.config.utils.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.DefaultRedirectStrategy;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * description
@@ -31,14 +34,13 @@ public class MyAuthenticationSucessHandler implements AuthenticationSuccessHandl
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
 
-		SavedRequest savedRequest = requestCache.getRequest(request, response);
-		if (savedRequest == null) {
-			log.info("自定义重定向地址");
-			redirectStrategy.sendRedirect(request, response, "/loginPage");
-		} else {
-			//这里存在问题，如果第一次登陆失败，再次登陆，登陆成功后会跳转到失败的地址
-			log.info("自定义重定向地址2{}",savedRequest.getRedirectUrl());
-			redirectStrategy.sendRedirect(request, response, savedRequest.getRedirectUrl());
-		}
+		String userName = authentication.getName();// 这个获取表单输入中返回的用户名;
+		LoginSuccessVO loginSuccessVO=LoginSuccessVO.builder().status("ok").currentAuthority(userName).build();
+		//登陆成功后返回true
+		PrintWriter printWriter = response.getWriter();
+		log.info(JsonUtils.objectToString(loginSuccessVO));
+		printWriter.write(JsonUtils.objectToString(loginSuccessVO));
+		printWriter.flush();
+		printWriter.close();
 	}
 }
