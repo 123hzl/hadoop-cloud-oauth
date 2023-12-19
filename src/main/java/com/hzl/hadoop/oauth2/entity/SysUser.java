@@ -17,13 +17,41 @@ import java.util.List;
 public class SysUser extends BaseEntity implements UserDetails {
 
 	private Long id;
+
 	private String username;
+
 	private String password;
-	private Integer status;
-	/*
+
+	/**
+	 * 头像url
+	 */
+	private String avatar;
+	/**
 	 * 电话号码
-	 * */
+	 */
 	private String phone;
+
+	/**
+	 * 用户名-真实姓名，可以为空
+	 */
+	private String realName;
+
+	/**
+	 * 租户id
+	 * */
+	private Long tenantId;
+
+	/**
+	 * 用户状态，1为登陆，0为离线
+	 */
+	private Integer status;
+
+	/**
+	 * 是否注销，true为已经注销，false为正常
+	 */
+	private Boolean deleted;
+
+
 
 
 	private List<SysRole> roles = new ArrayList<>();
@@ -101,4 +129,37 @@ public class SysUser extends BaseEntity implements UserDetails {
 	}
 
 
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getRealName() {
+		return realName;
+	}
+
+	public void setRealName(String realName) {
+		this.realName = realName;
+	}
+
+	@Override
+	public Long getTenantId() {
+		return tenantId;
+	}
+
+	@Override
+	public void setTenantId(Long tenantId) {
+		this.tenantId = tenantId;
+	}
 }
